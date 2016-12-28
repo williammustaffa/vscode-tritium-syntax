@@ -26,7 +26,12 @@
 			"patterns": [
 				{
 					"name": "comment",
-					"match": "\\#.*"
+					"match": "(\\#|\\/\\/).*"
+				},
+				{
+					"name": "comment",
+					"begin": "\\/\\*",
+					"end": "\\*\\/"
 				}
 			]
 		},
@@ -34,7 +39,7 @@
 			"patterns": [
 				{
 					"name": "constant.numeric",
-					"match": "\\b\\d+\\b"
+					"match": "\\s+\\b\\d+\\b"
 				}
 			]
 		},
