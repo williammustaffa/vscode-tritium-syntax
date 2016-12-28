@@ -47,7 +47,8 @@
 						"1": { "name": "keyword.control.tritium" },
 						"2": { "name": "none", "patterns": [
 							{	"include": "#strings" },
-							{ "include": "#keywords" }
+							{ "include": "#keywords" },
+							{ "include": "#functions" }
 						] }
 					}
 				}
