@@ -1,0 +1,85 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "tritium",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#number"
+		},
+		{
+			"include": "#variables"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#comment"
+		}
+	],
+	"repository": {
+		"comment": {
+			"patterns": [
+				{
+					"name": "comment",
+					"match": "\\#.*"
+				}
+			]
+		},
+		"number": {
+			"patterns": [
+				{
+					"name": "constant.numeric",
+					"match": "\\b\\d+\\b"
+				}
+			]
+		},
+		"functions": {
+			"patterns": [
+				{
+					"match": "\\b([^\\(\\)]+)\\((.*)\\)",
+					"applyEndPatternLast": 1,
+					"captures": {
+						"1": { "name": "keyword.control.tritium" },
+						"2": { "name": "none", "patterns": [
+							{	"include": "#strings" },
+							{ "include": "#keywords" }
+						] }
+					}
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "variable.control.variable",
+					"match": "\\$\\w+|[\\p{L}\\p{N}\\-\\_]+\\s*\\:"
+				},
+				{
+					"name": "entity.control.import",
+					"match": "(@import)\\s+(\\S+)",
+					"captures": {
+						"1": { "name": "keyword.control.tritium" },
+						"2": { "name": "variable.control.variable" }
+					}
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.tritium",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.tritium",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.ts"
+}
