@@ -3,7 +3,7 @@
     "displayName": "tritium-syntax",
     "description": "tritium syntax highlight",
     "version": "0.0.1",
-    "publisher": "william",
+    "publisher": "williammustaffa",
     "engines": {
         "vscode": "^1.5.0"
     },
