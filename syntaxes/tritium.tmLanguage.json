@@ -2,24 +2,13 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "tritium",
 	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#number"
-		},
-		{
-			"include": "#variables"
-		},
-		{
-			"include": "#functions"
-		},
-		{
-			"include": "#comment"
-		}
+		{ "include": "#keywords" },
+		{ "include": "#strings" },
+		{ "include": "#number" },
+		{ "include": "#variables" },
+		{ "include": "#functions" },
+		{ "include": "#comment" },
+		{ "include": "#imports" }
 	],
 	"repository": {
 		"comment": {
@@ -35,6 +24,30 @@
 				}
 			]
 		},
+		"regex": {
+			"name": "string.quoted.double.tritium",
+			"begin": "\\/",
+			"end": "(\\/)([\\g\\m\\i\\s\\U]+)",
+			"endCaptures": {
+				"2": { "name": "keyword.control.tritium" }
+			},
+			"patterns": [
+				{
+					"name": "variable.control.variable",
+					"match": "\\^|\\$|\\*"
+				},
+				{
+					"name": "constant.character.escape.tritium",
+					"match": "\\[.+\\]"
+				},
+				{
+					"name": "constant.character.escape.tritium",
+					"match": "\\{\\d+\\}"
+				},
+				{ "include": "#escape" },
+				{ "include": "#regex" }
+			]
+		},
 		"number": {
 			"patterns": [
 				{
@@ -43,28 +56,59 @@
 				}
 			]
 		},
-		"functions": {
+		"parameter": {
 			"patterns": [
 				{
-					"match": "\\b([^\\(\\)]+)\\((.*)\\)",
-					"applyEndPatternLast": 1,
+					"match": "(.+)\\,?",
 					"captures": {
-						"1": { "name": "keyword.control.tritium" },
-						"2": { "name": "none", "patterns": [
-							{	"include": "#strings" },
-							{ "include": "#keywords" },
-							{ "include": "#functions" }
-						] }
+						"0": {
+							"patterns": [
+								{	"include": "#number" },
+								{	"include": "#strings" },
+								{ "include": "#variables" },
+								{ "include": "#attributes" },
+								{ "include": "#functions" },
+								{ "include": "#regex" }
+							] 
+						}
 					}
 				}
 			]
 		},
-		"keywords": {
+		"functions": {
+			"patterns": [
+				{
+					"match": "\\b([^\\(\\)\\,\\s]+)\\((.*)\\)",
+					"captures": {
+						"1": { "name": "entity.name.function" },
+						"2": { 
+							"name": "none",
+							"patterns": [
+								{	"include": "#parameter" }
+							]
+						}
+					}
+				}
+			]
+		},
+		"variables": {
 			"patterns": [
 				{
 					"name": "variable.control.variable",
-					"match": "\\$\\w+|[\\p{L}\\p{N}\\-\\_]+\\s*\\:"
-				},
+					"match": "\\$\\w+"
+				}
+			]
+		},
+		"attributes": {
+			"patterns": [
+				{
+					"name": "entity.other.attribute-name",
+					"match": "[\\p{L}\\p{N}\\-\\_]+\\s*\\:"
+				}
+			]
+		},
+		"imports": {
+			"patterns": [
 				{
 					"name": "entity.control.import",
 					"match": "(@import)\\s+(\\S+)",
@@ -75,14 +119,31 @@
 				}
 			]
 		},
-		"strings": {
-			"name": "string.quoted.double.tritium",
-			"begin": "\"",
-			"end": "\"",
+		"escape": {
 			"patterns": [
 				{
 					"name": "constant.character.escape.tritium",
 					"match": "\\\\."
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.tritium",
+					"begin": "\\'",
+					"end": "\\'",
+					"patterns": [
+						{ "include": "#escape" }
+					]
+				},
+				{
+					"name": "string.quoted.double.tritium",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{ "include": "#escape" }
+					]
 				}
 			]
 		}

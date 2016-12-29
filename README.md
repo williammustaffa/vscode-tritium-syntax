@@ -4,4 +4,4 @@ Basic tritium syntax support
 
 ## License
 
-TODO: MIT
+MIT
